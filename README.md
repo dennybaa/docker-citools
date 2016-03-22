@@ -38,3 +38,14 @@ RUN yum -y install \
 ```
 
 For details see [docker-template.md](docker-template.md).
+
+# Setup
+
+To download and install project dependencies you can run a shortcut:
+
+```
+# System-wide install
+wget -qO- https://raw.githubusercontent.com/dennybaa/docker-citools/master/setup | sudo sh -s [revision]
+```
+
+Mind that that git and pip binaries should be present on the system.

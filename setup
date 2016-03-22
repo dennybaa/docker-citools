@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+url="https://github.com/dennybaa/docker-citools"
+
+revision=$1; [ -z "$1" ] || shift
+revision=${1:-master}
+
+git_clone() {
+  local projetdir=$(basename $url)
+
+  mkdir $projetdir || { 2>&1 echo "Project has been already cloned aborting..."; exit 1; }
+  cd $projetdir
+  git init
+  git remote add origin $url
+  git fetch --depth 1 origin $revision
+  git reset --hard FETCH_HEAD
+}
+
+git_clone
+pip install -r requirements.txt
