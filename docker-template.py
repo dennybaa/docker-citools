@@ -309,11 +309,11 @@ class UpdateDockerfiles(object):
                 # variant is valid for all versions.
                 mapped_versions = self.version_list
             elif mapped_versions is None:
-                self.log.debug("No versions will be processed for >%s<", variant)
+                self.log.debug("No versions will be processed for `%s'", variant)
                 continue
 
-            vn = variant or '_default'
-            self.log.debug("Variant `%s' mapped to versions: %s", vn, mapped_versions)
+            self.log.debug("Versions %s will be processed for `%s'",
+                           ', '.join(mapped_versions), variant or '_default')
 
             for version in mapped_versions:
                 self.update_dockerfile(version, variant)
