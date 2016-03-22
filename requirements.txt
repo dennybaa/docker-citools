@@ -1,0 +1,4 @@
+git+https://github.com/dennybaa/docker-jinja.git#egg=docker-jinja
+docopt
+jinja2
+mergedict
