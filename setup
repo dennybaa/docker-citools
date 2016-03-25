@@ -5,7 +5,7 @@ url="https://github.com/dennybaa/docker-citools"
 pip=pip
 
 if [ "$1" = "--sudo-pip" ]; then
-  pip="sudo pip"
+  pip="sudo -H pip"
   shift
 fi
 
