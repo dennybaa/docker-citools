@@ -2,6 +2,12 @@
 set -e
 
 url="https://github.com/dennybaa/docker-citools"
+pip=pip
+
+if [ "$1" = "--sudo-pip" ]; then
+  pip="sudo pip"
+  shift
+fi
 
 revision=$1; [ -z "$1" ] || shift
 revision=${1:-master}
@@ -18,4 +24,4 @@ git_clone() {
 }
 
 git_clone
-pip install -r requirements.txt
+$pip install -r requirements.txt

@@ -45,7 +45,10 @@ To download and install project dependencies you can run a shortcut:
 
 ```
 # System-wide install
-wget -qO- https://raw.githubusercontent.com/dennybaa/docker-citools/master/setup | sudo sh -s [revision]
+wget -qO- https://raw.githubusercontent.com/dennybaa/docker-citools/master/setup | sh -s [revision] -- --sudo-pip
+
+# Using current available pip (might be user pyenv or virtualenv)
+wget -qO- https://raw.githubusercontent.com/dennybaa/docker-citools/master/setup | sh -s [revision]
 ```
 
 Mind that that git and pip binaries should be present on the system.
