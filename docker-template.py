@@ -302,21 +302,24 @@ class UpdateDockerfiles(object):
         """Process dockerfiles accoriding to given configuration.
         """
         default = object()
-        for variant in self.variant_list:
-            mapped_versions = self.config['mapping'].get(variant, default)
-            if mapped_versions is default:
-                # mapping:variant doesn't exist, this means that
-                # variant is valid for all versions.
-                mapped_versions = self.version_list
-            elif mapped_versions is None:
-                self.log.debug("No versions will be processed for `%s'", variant)
-                continue
+        for version in self.version_list:
+            for variant in self.variant_list:
+                mapped_versions = self.config['mapping'].get(variant, default)
 
-            self.log.debug("Versions %s will be processed for `%s'",
-                           ', '.join(mapped_versions), variant or '_default')
+                if mapped_versions is default:
+                    # mapping:variant doesn't exist, this means that
+                    # variant is valid for all versions.
+                    mapped_versions = self.version_list
+                elif mapped_versions is None:
+                    self.log.debug("No versions will be processed for `%s'", variant)
+                    continue
 
-            for version in mapped_versions:
-                self.update_dockerfile(version, variant)
+                self.log.debug("Versions %s will be processed for `%s'",
+                               ', '.join(mapped_versions), variant or '_default')
+
+                # Update dockerfile if it's available in mapped_versions
+                if version in mapped_versions:
+                    self.update_dockerfile(version, variant)
 
     @property
     def djinja_conffile(self):
@@ -371,9 +374,10 @@ class UpdateDockerfiles(object):
             shell_out('rm -f {}'.format(diff_path))
 
         if diff.failed:
-            relpath = os.path.join(opts['image'], version, variant, 'Dockerfile')
+            relpath = os.path.join(version, variant, 'Dockerfile')
             if self.config['quiet']:
-                self.log.info(relpath)
+                # !this is printed to stdout!
+                print relpath
             else:
                 self.log.info('***** content update %s *****', relpath)
                 self.log.info("%s", diff.output)
