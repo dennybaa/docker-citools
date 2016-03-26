@@ -3,6 +3,7 @@
 import subprocess
 import os
 import sys
+import json
 
 from collections import namedtuple
 from docopt import docopt
@@ -55,6 +56,19 @@ def get_payload(**context):
     return template.render(**context)
 
 
+def print_build_result(json_string):
+    """Print build result data in a pretty way.
+    """
+    bdict = json.loads(json_string)
+    org = bdict['repository']['namespace']
+    repo = bdict['repository']['name']
+    task_id = bdict['id']
+
+    task_url = "https://quay.io/repository/{}/{}/build/{}".format(org, repo, task_id)
+    print json.dumps(bdict, indent=2)
+    print "***** BUILD TASK URL ===>\n{}".format(task_url)
+
+
 def trigger_build(repository, payload_data):
     """Trigger quay.io repository build
     """
@@ -64,17 +78,18 @@ def trigger_build(repository, payload_data):
     if not access_token:
         raise RuntimeError("QUAYIO_ACCESSTOKEN environment variable is required")
 
-    command = ('curl -XPOST', '-H "Content-Type: application/json"',
+    command = ('curl -sS -XPOST', '-H "Content-Type: application/json"',
                '-H "Authorization: Bearer {}"'.format(access_token), '-d @-',
                "{api}/{repository}/build/".format(api=quayio_apiurl.strip('/'),
                                                   repository=repository.strip('/')))
 
     result = shell_out(' '.join(command), payload_data)
-    if result.output:
-        print result.output
 
     if result.failed:
+        print result.output
         sys.exit(1)
+
+    print_build_result(result.output)
 
 
 if __name__ == "__main__":
