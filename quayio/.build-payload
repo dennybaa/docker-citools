@@ -1,0 +1,7 @@
+{
+  "docker_tags": [
+    "{{ tag }}"
+  ],
+  "pull_robot": "{{ pull_robot }}",
+  "archive_url": "{{ archive_url }}"
+}
