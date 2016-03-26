@@ -65,8 +65,8 @@ def print_build_result(json_string):
     task_id = bdict['id']
 
     task_url = "https://quay.io/repository/{}/{}/build/{}".format(org, repo, task_id)
-    print json.dumps(bdict, indent=2)
     print "***** BUILD TASK URL ===>\n{}".format(task_url)
+    print json.dumps(bdict, indent=2)
 
 
 def trigger_build(repository, payload_data):
