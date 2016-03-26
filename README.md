@@ -39,6 +39,20 @@ RUN yum -y install \
 
 For details see [docker-template.md](docker-template.md).
 
+## git-updated-dockerfiles.py
+
+Script shows a list of updated dockerfiles changed through commits. Examples:
+
+```
+# Requires revision diff as the first argument from..to (or for ex. HEAD~n)
+~/docker-citools/git-updated-dockerfiles.py 6dd503963c98...15b8b93e1cf8
+
+# Script can order dockerfiles by variant (handy to use with docker-template.py)
+~/docker-citools/git-updated-dockerfiles.py 6dd503963c98...15b8b93e1cf8 -- curl scm _default
+```
+
+Note that list of updated files depends on the current working directory under git tree, since git diff is invoked as `git diff $REVDIFF ./`.
+
 # Setup
 
 To download and install project dependencies you can run a shortcut:
