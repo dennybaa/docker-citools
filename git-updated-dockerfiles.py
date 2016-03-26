@@ -38,7 +38,7 @@ def shell_out(command, shell='/bin/bash'):
 def updated_dockerfiles(revision_diff):
     """Return list of updated dockerfiles from_rev...to_rev or relative revision offset HEAD~n
     """
-    git_diff = shell_out("git diff --name-only {} ./ | grep Dockerfile".format(revision_diff))
+    git_diff = shell_out("git diff --name-only {} ./ | grep 'Dockerfile$'".format(revision_diff))
     if git_diff.failed:
         log.info("No dockerfiles have been updated!")
         sys.exit(0)
